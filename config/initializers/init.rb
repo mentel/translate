@@ -2,11 +2,11 @@ require 'translate'
 
 I18n::Backend::Simple.send(:include, I18n::Backend::I18nTranslateBackend)
 
-config.after_initialize do
+Rails.configuration.after_initialize do
   Translate::Storage.mode = if defined?(Ubiquo::Config) && Ubiquo::Config.option_exists?(:translate_mode)
     Ubiquo::Config.get(:translate_mode)
   else
-    :application
+    :replica
   end
 
   def I18n.supported_locales

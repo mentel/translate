@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{translate-rails3}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Marklund", "Milan Novota", "Roman Shterenzon"]
@@ -34,7 +34,7 @@ and also includes work from this fork: https://github.com/milann/translate
     "app/views/translate/_pagination.html.erb",
     "app/views/translate/index.html.erb",
     "config/routes.rb",
-    "init.rb",
+    "config/initializers/init.rb",
     "lib/tasks/translate.rake",
     "lib/translate.rb",
     "lib/translate/file.rb",
@@ -42,6 +42,7 @@ and also includes work from this fork: https://github.com/milann/translate
     "lib/translate/log.rb",
     "lib/translate/routes.rb",
     "lib/translate/storage.rb",
+    "lib/i18n/backend/i18n_translate_backend.rb",
     "spec/controllers/translate_controller_spec.rb",
     "spec/file_spec.rb",
     "spec/files/translate/app/models/article.rb",

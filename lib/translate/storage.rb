@@ -15,7 +15,7 @@ class Translate::Storage
   # Returns a hash of paths and the keys that have been written
   #
   def write_to_file keys
-    init_translations_and_ignore_app_mode_file_dump if self.class.mode == :origin
+    init_translations_and_ignore_app_mode_file_dump if [:origin, :replica].include?(self.class.mode)
     # Hash to capture the files updated on origin mode and the keys for each one
     result = {}
     keys.each do |key, value|
@@ -96,7 +96,7 @@ class Translate::Storage
     filenames = []
     # Origin or developer mode, the translations will be applied to the original
     # file where those where setup, including plugin folders
-    if self.class.mode == :origin
+    if [:origin, :replica].include?(self.class.mode)
       filename, found_locale = get_translation_origin_filename(key)
       # If filename is outside rail.root send it to config/locales/external_#{translations_locale_name}.yml
       filename = replace_external_to_application_file_paths(filename) if filename.present?
@@ -107,6 +107,13 @@ class Translate::Storage
         # in path for the new_locale
         filename = find_or_create_origin_filename(filename, found_locale)
       end
+      
+      #
+      # Replica mode will insert in the same file as the from locale
+      #
+      if self.class.mode == :replica
+        filename.gsub!(/([a-z]{2}).yml/, "#{self.locale}.yml")
+      end
       if filename
         filenames << filename
       end
@@ -115,8 +122,10 @@ class Translate::Storage
     # Normal app mode, the translation will be dumped together to /config/locales/#{locale}.yml to keep
     # in sync with the original source of the translation
     #
-    create_empty_translations_file(application_mode_file_path) if !File.exists?(application_mode_file_path)
-    filenames << application_mode_file_path
+    unless :replica == self.class.mode
+      create_empty_translations_file(application_mode_file_path) if !File.exists?(application_mode_file_path)
+      filenames << application_mode_file_path
+    end
     #
     # Path to the backup file of the current translation request/transaction
     #
