@@ -3,3 +3,5 @@ Rails.application.routes.draw do
   match 'translate/translate' => 'translate#translate', :as => :translate
   match 'translate/reload' => 'translate#reload', :as => :translate_reload
 end if Rails.env.development?
+
+puts "Development: #{Rails.env.development?}"
