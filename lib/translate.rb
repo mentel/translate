@@ -6,3 +6,4 @@ end
 Dir[File.join(File.dirname(__FILE__), "translate", "*.rb")].each do |file|
   require file
 end
+require 'i18n_translate_backend'
