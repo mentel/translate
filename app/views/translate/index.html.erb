@@ -70,7 +70,7 @@
     <p class="translate">
 	    <%= submit_tag "Save Translations" %>
 	  </p>
-	  <% @paginated_keys.each do |key| 
+	  <% @paginated_keys.each do |key|
 	      from_text = lookup(@from_locale, key)
 	      to_text = lookup(@to_locale, key)
 	      line_size = 100

@@ -111,10 +111,8 @@ class Translate::Storage
       #
       # Replica mode will insert in the same file as the from locale
       #
-      if self.class.mode == :replica
-        filename.gsub!(/([a-z]{2}).yml/, "#{self.locale}.yml")
-      end
       if filename
+        filename.gsub!(/([a-z]{2}).yml/, "#{self.locale}.yml") if self.class.mode == :replica
         filenames << filename
       end
     end
@@ -122,7 +120,7 @@ class Translate::Storage
     # Normal app mode, the translation will be dumped together to /config/locales/#{locale}.yml to keep
     # in sync with the original source of the translation
     #
-    unless :replica == self.class.mode
+    if :replica != self.class.mode || filenames.empty?
       create_empty_translations_file(application_mode_file_path) if !File.exists?(application_mode_file_path)
       filenames << application_mode_file_path
     end
